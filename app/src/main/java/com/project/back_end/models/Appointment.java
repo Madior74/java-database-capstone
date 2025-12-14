@@ -1,5 +1,6 @@
 package com.project.back_end.models;
 
+import java.beans.Transient;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -34,17 +36,15 @@ public class Appointment {
 
   // appointment.
   @NotNull(message = "Appointment time cannot be null")
+  @Future
   private LocalDateTime appointmentTime;
 
   // 5. 'status' field:
-  // - Represents the current status of the appointment. It is an integer where:
-  // - 0 means the appointment is scheduled.
-  // - 1 means the appointment has been completed.
   @NotNull(message = "Status cannot be null")
-  private int status;
+  private int status; // 0 = Scheduled, 1 = Completed
 
   // 6. 'getEndTime' method:
-
+  @Transient
   public LocalDateTime getEndTime() {
     return this.appointmentTime.plusHours(1);
   }

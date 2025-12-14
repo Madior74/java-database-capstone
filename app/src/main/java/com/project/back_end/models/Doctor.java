@@ -44,15 +44,13 @@ public class Doctor {
 
     // 6. 'phone' field:
     @NotNull(message = "Phone cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$")
+    @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
     @Size(min = 10, max = 10)
     private String phone;
 
     // 7. 'availableTimes' field:
     @ElementCollection
     private List<String> availableTimes;
-
-    
 
     // 8. Getters and Setters:
     public Long getId() {

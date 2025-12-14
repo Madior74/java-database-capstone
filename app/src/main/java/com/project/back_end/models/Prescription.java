@@ -63,7 +63,7 @@ public class Prescription {
   public void setPatientName(String patientName) {
     this.patientName = patientName;
   }
-
+  
   public Long getAppointmentId() {
     return appointmentId;
   }

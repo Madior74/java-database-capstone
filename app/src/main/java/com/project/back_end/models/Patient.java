@@ -14,44 +14,39 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Patient {
 
-// 1. 'id' field:
-  @Id
+    // 1. 'id' field:
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-// 2. 'name' field:
+    // 2. 'name' field:
     @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 100)
     private String name;
 
-
-
-// 3. 'email' field:
- @NotNull(message = "Email cannot be Null")
+    // 3. 'email' field:
+    @NotNull(message = "Email cannot be Null")
     @Email
     private String email;
 
-
-// 4. 'password' field:
-   @NotNull(message = "Password cannot be null")
+    // 4. 'password' field:
+    @NotNull(message = "Password cannot be null")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Size(min = 6)
-    private String password;    
+    private String password;
 
-// 5. 'phone' field:
- @NotNull(message = "Phone cannot be null")
-    @Pattern(regexp = "^[0-9]{10}$")
+    // 5. 'phone' field:
+    @NotNull(message = "Phone cannot be null")
+    @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
     @Size(min = 10, max = 10)
     private String phone;
 
-// 6. 'address' field:
+    // 6. 'address' field:
     @NotNull(message = "Address cannot be null")
     @Size(max = 255)
     private String address;
 
     // 7. Getters and Setters:
-
 
     public Long getId() {
         return id;
@@ -100,15 +95,5 @@ public class Patient {
     public void setAddress(String address) {
         this.address = address;
     }
-
-
-
-
-
-
-
-
-
-  
 
 }
