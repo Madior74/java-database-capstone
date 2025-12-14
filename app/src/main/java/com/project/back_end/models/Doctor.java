@@ -18,7 +18,7 @@ import jakarta.validation.constraints.Size;
 public class Doctor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 2. 'name' field:
@@ -45,7 +45,6 @@ public class Doctor {
     // 6. 'phone' field:
     @NotNull(message = "Phone cannot be null")
     @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
-    @Size(min = 10, max = 10)
     private String phone;
 
     // 7. 'availableTimes' field:

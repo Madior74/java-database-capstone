@@ -19,7 +19,7 @@ public class Patient {
 
     // 1. 'id' field:
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 2. 'name' field:
@@ -41,7 +41,6 @@ public class Patient {
     // 5. 'phone' field:
     @NotNull(message = "Phone cannot be null")
     @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
-    @Size(min = 10, max = 10)
     private String phone;
 
     // 6. 'address' field:

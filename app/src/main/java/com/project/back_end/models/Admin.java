@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 public class Admin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Name cannot be null")
