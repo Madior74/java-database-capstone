@@ -52,6 +52,26 @@ public class Doctor {
     @ElementCollection
     private List<String> availableTimes;
 
+    private int yearsOfExperience;
+
+    public int getYearsOfExperience() {
+        return yearsOfExperience;
+    }
+
+    public void setYearsOfExperience(int yearsOfExperience) {
+        this.yearsOfExperience = yearsOfExperience;
+    }
+
+    private int rating;
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     // 8. Getters and Setters:
     public Long getId() {
         return id;

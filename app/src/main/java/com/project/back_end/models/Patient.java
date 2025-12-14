@@ -1,5 +1,7 @@
 package com.project.back_end.models;
 
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -46,7 +49,32 @@ public class Patient {
     @Size(max = 255)
     private String address;
 
+    //date of birth
+    @Past
+    private LocalDate dateOfBirth;
+
+    //emergencyContact
+      @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
+    @Size(min = 10, max = 10)
+    private String emergencyContact;
+
     // 7. Getters and Setters:
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+      public void setEmergencyContact(String emergencyContact) {
+          this.emergencyContact = emergencyContact;
+      }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public Long getId() {
         return id;

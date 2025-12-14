@@ -13,6 +13,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Appointment {
@@ -57,6 +58,18 @@ public class Appointment {
   // 8. 'getAppointmentTimeOnly' method:
   public LocalTime getAppointmentTimeOnly() {
     return this.appointmentTime.toLocalTime();
+  }
+
+  //reasonForVisit
+  @Size(max = 255)
+private String reasonForVisit;
+
+  public String getReasonForVisit() {
+    return reasonForVisit;
+  }
+
+  public void setReasonForVisit(String reasonForVisit) {
+    this.reasonForVisit = reasonForVisit;
   }
 
   // 9. Constructor(s):
