@@ -51,3 +51,103 @@
 
    Catch any other errors, alert the user, and return a default empty result
 */
+import { BASE_API_URL } from '../config/config.js';
+
+const DOCTOR_API = `${BASE_API_URL}/doctors`;
+
+/**
+ * Fetch the list of all doctors from the API
+ * @returns {Promise<Array>} Array of doctor objects, or empty array on error
+ */
+async function getDoctors() {
+  try {
+    const response = await fetch(DOCTOR_API);
+    const data = await response.json();
+    return data.doctors || [];
+  } catch (error) {
+    console.error('Error fetching doctors:', error);
+    return [];
+  }
+}
+
+/**
+ * Delete a specific doctor using their ID and an authentication token
+ * @param {string|number} id - The doctor's ID
+ * @param {string} token - Authentication token
+ * @returns {Promise<{ success: boolean, message: string }>}
+ */
+async function deleteDr(id, token) {
+  try {
+    const response = await fetch(`${DOCTOR_API}/${id}/${token}`, {
+      method: 'DELETE',
+    });
+    const data = await response.json();
+    return {
+      success: response.ok,
+      message: data.message || 'Doctor deleted successfully',
+    };
+  } catch (error) {
+    console.error('Error deleting doctor:', error);
+    return {
+      success: false,
+      message: 'Failed to delete doctor',
+    };
+  }
+}
+
+/**
+ * Save (create) a new doctor using a POST request
+ * @param {Object} doctor - Doctor object to be saved
+ * @param {string} token - Authentication token
+ * @returns {Promise<{ success: boolean, message: string }>}
+ */
+async function saveDoctor(doctor, token) {
+  try {
+    const response = await fetch(`${DOCTOR_API}/${token}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(doctor),
+    });
+    const data = await response.json();
+    return {
+      success: response.ok,
+      message: data.message || 'Doctor saved successfully',
+    };
+  } catch (error) {
+    console.error('Error saving doctor:', error);
+    return {
+      success: false,
+      message: 'Failed to save doctor',
+    };
+  }
+}
+
+/**
+ * Fetch doctors based on filtering criteria (name, time, and specialty)
+ * @param {string} name - Doctor's name (or partial name)
+ * @param {string} time - Available time slot
+ * @param {string} specialty - Doctor's specialty
+ * @returns {Promise<{ doctors: Array }>}
+ */
+async function filterDoctors(name = '', time = '', specialty = '') {
+  try {
+    const url = `${DOCTOR_API}/filter/${encodeURIComponent(name)}/${encodeURIComponent(time)}/${encodeURIComponent(specialty)}`;
+    const response = await fetch(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      return { doctors: data.doctors || [] };
+    } else {
+      console.error('Error filtering doctors: Received non-OK response');
+      return { doctors: [] };
+    }
+  } catch (error) {
+    console.error('Error filtering doctors:', error);
+    alert('An error occurred while filtering doctors.');
+    return { doctors: [] };
+  }
+}
+
+export { getDoctors, deleteDr as deleteDoctor, saveDoctor, filterDoctors };

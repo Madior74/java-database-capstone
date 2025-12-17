@@ -56,3 +56,97 @@
     - Log the error to the console
     - Show a generic error message
 */
+
+// 1. Importations
+import { openModal } from '../components/modals.js'; // Gestionnaire d'affichage des modals
+import { BASE_URL } from '../config/config.js';         // URL de base de l'API
+
+// 2. Définition des constantes d'endpoints
+const ADMIN_API = `${BASE_URL}/admin/login`;
+const DOCTOR_API = `${BASE_URL}/doctor/login`;
+
+// 3. Initialisation au chargement de la page
+window.onload = () => {
+    const adminBtn = document.getElementById("adminLogin");
+    const doctorBtn = document.getElementById("doctorLogin");
+
+    // Écouteur pour le modal Admin
+    if (adminBtn) {
+        adminBtn.addEventListener('click', () => openModal('adminLogin'));
+    }
+
+    // Écouteur pour le modal Docteur
+    if (doctorBtn) {
+        doctorBtn.addEventListener('click', () => openModal('doctorLogin'));
+    }
+};
+
+/**
+ * 4. Gestionnaire de connexion Administrateur
+ */
+window.adminLoginHandler = async () => {
+    // Étape 1 : Récupération des données
+    const username = document.getElementById("adminUsername").value;
+    const password = document.getElementById("adminPassword").value;
+
+    // Étape 2 : Création de l'objet
+    const admin = { username, password };
+
+    try {
+        // Étape 3 : Requête POST
+        const response = await fetch(ADMIN_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(admin)
+        });
+
+        // Étape 4 : Succès
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('authToken', data.token);
+            selectRole('admin'); // Fonction globale pour rediriger/adapter l'UI
+        } else {
+            // Étape 5 : Identifiants invalides
+            alert("Identifiants administrateur invalides.");
+        }
+    } catch (error) {
+        // Étape 6 : Erreur réseau ou serveur
+        console.error("Erreur Admin Login:", error);
+        alert("Une erreur est survenue lors de la connexion au serveur.");
+    }
+};
+
+/**
+ * 5. Gestionnaire de connexion Médecin
+ */
+window.doctorLoginHandler = async () => {
+    // Étape 1 : Récupération des données
+    const email = document.getElementById("doctorEmail").value;
+    const password = document.getElementById("doctorPassword").value;
+
+    // Étape 2 : Création de l'objet
+    const doctorData = { email, password };
+
+    try {
+        // Étape 3 : Requête POST
+        const response = await fetch(DOCTOR_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(doctorData)
+        });
+
+        // Étape 4 : Succès
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('authToken', data.token);
+            selectRole('doctor');
+        } else {
+            // Étape 5 : Identifiants invalides
+            alert("Email ou mot de passe médecin incorrect.");
+        }
+    } catch (error) {
+        // Étape 6 : Gestion des erreurs
+        console.error("Erreur Doctor Login:", error);
+        alert("Impossible de contacter le serveur pour le moment.");
+    }
+};
