@@ -19,7 +19,7 @@ import jakarta.validation.constraints.Size;
 public class Appointment {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   // 2. 'doctor' field:

@@ -19,7 +19,7 @@ public class Patient {
 
     // 1. 'id' field:
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // 2. 'name' field:

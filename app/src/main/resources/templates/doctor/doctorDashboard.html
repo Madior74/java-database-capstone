@@ -99,3 +99,68 @@ This file defines the Doctor Dashboard interface, allowing doctors to view and m
 
     * Properly close the `<body>` and `<html>` tags to complete the document.
  -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" th:href="@{/assets/images/logo/logo.png}" />
+
+    <title>Tableau de Bord Médecin</title>
+    <link rel="stylesheet" th:href="@{/assets/css/adminDashboard.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/doctorDashboard.css}" />
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}" />
+    <script th:src="@{/js/render.js}" defer></script>
+    <script th:src="@{/js/util.js}" defer></script>
+    <script th:src="@{/js/components/header.js}" defer></script>
+    <script th:src="@{/js/components/footer.js}" defer></script>
+    <script th:src="@{/js/components/patientRow.js}" defer></script>
+  </head>
+  <body onload="renderContent()">
+    <div class="container">
+        <div class="wrapper">
+            <div id="header"></div>
+            <main class="main-content">
+                <div class="search-bar">
+                    <input type="text" name="" id="searchBar" class="searchBar" placeholder="Rechercher par nom de médecin">
+                    <select id="timeFilter">
+                        <option value="">Filtrer par heure</option>
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>
+                    <select id="specialtyFilter">
+                        <option value="">Filtrer par spécialité</option>
+                        <option value="Cardiologist">Cardiologue</option>
+                        <option value="Dentist">Dentiste</option>
+                        <option value="Dermatologist">Dermatologue</option>
+                        <option value="Neurologist">Neurologue</option>
+                        <option value="Pediatrician">Pédiatre</option>
+                        <option value="Psychiatrist">Psychiatre</option>
+                        <option value="Radiologist">Radiologue</option>
+                </div>
+                button id="todayButton">Rendez-vous d'aujourd'hui</button>
+                <input type="date" id="datePicker" />
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>Patient ID</th>
+                            <th>Nom</th>
+                            <th>Numéro de Téléphone</th>
+                            <th>Email</th>
+                            <th>Prescription</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientTableBody"></tbody>
+                </table>
+                <div id="content"></div>
+                <div id="footer"></div>
+            </main>
+        </div>
+    </div>
+
+
+
+<script type="module" src="../js/services/adminDashboard.js" defer></script>
+<script type="module" src="../js/components/doctorCard.js" defer></script>
+  </body>
+</html>

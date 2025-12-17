@@ -1,3 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="./js/util.js" defer></script>
+    <script src="./js/render.js" defer></script>
+       <script src="./js/components/header.js" defer></script>
+   <script src="./js/components/footer.js" defer></script>/
+  </head>
+  <body>
+    <main  class="main-content">
+        <h2>Sélectionnez votre rôle</h2>
+        <button id="adminBtn" onclick="selectionnerRole('Administrateur')">Admin</button>
+        <button id="patientBtn" onclick="selectionnerRole('Patient')">Patient</button>
+        <button id="doctorBtn" onclick="selectionnerRole('Doctor')">Doctor</button>
+        <div class="container">
+            <div class="wrapper">
+                <div id="header"></div>
+                <div id="footer"></div>
+            </div>
+        </div>
+    </main>
+     <h1>Cliquez ci-dessous pour ouvrir le modal</h1>
+    
+    <!-- Bouton pour ouvrir le modal -->
+    <button id="openModalBtn">Ouvrir le Modal</button>
+
+    <!-- Le Modal -->
+    <div id="modal" class="modal">
+        <!-- Contenu du Modal -->
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Titre du Modal</h2>
+            <div id="modal-body">
+                <p>Ceci est le contenu dynamique du corps du modal.</p>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="../js/services/index.js" defer></script>
+  </body>
+</html>
+
 <!-- index.html -->
 <!-- 
 
