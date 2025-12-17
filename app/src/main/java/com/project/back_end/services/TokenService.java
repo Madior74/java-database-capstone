@@ -1,6 +1,6 @@
 package com.project.back_end.services;
 
-public class TokenService {
+
 // 1. **@Component Annotation**
 // The @Component annotation marks this class as a Spring component, meaning Spring will manage it as a bean within its application context.
 // This allows the class to be injected into other Spring-managed components (like services or controllers) where it's needed.
@@ -40,4 +40,107 @@ public class TokenService {
 // This ensures secure access control based on the user's role and their existence in the system.
 
 
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.project.back_end.repo.AdminRepository;
+import com.project.back_end.repo.DoctorRepository;
+import com.project.back_end.repo.PatientRepository;
+
+import javax.crypto.SecretKey;
+import java.util.Date;
+import java.util.Optional;
+
+@Component  // 👈 Makes this a Spring-managed bean
+public class TokenService {
+
+    private final String jwtSecret;
+    private final AdminRepository adminRepository;
+    private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
+
+    // Constructor Injection
+    public TokenService(
+            @Value("${jwt.secret}") String jwtSecret,
+            AdminRepository adminRepository,
+            DoctorRepository doctorRepository,
+            PatientRepository patientRepository) {
+        this.jwtSecret = jwtSecret;
+        this.adminRepository = adminRepository;
+        this.doctorRepository = doctorRepository;
+        this.patientRepository = patientRepository;
+    }
+
+    // Helper: Create signing key from secret
+    private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
+
+    // 4. Generate JWT token (valid for 7 days)
+    public String generateToken(String email) {
+        return Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 7 days
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // 5. Extract email from token
+    public String extractEmail(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
+    }
+
+    // 6. Validate token for a specific role
+    public boolean validateToken(String token, String role) {
+        try {
+            String email = extractEmail(token);
+
+            // Ensure token isn't expired (JJWT does this automatically during parsing)
+            // Now check existence based on role
+            switch (role.toLowerCase()) {
+                case "admin":
+                    return adminRepository.findByEmail(email).isPresent();
+                case "doctor":
+                    return doctorRepository.findByEmail(email).isPresent();
+                case "patient":
+                    return patientRepository.findByEmail(email).isPresent();
+                default:
+                    return false;
+            }
+        } catch (Exception e) {
+            // Invalid token, expired, malformed, etc.
+            return false;
+        }
+    }
+
+    // // Optional: Overloaded method to validate token + match expected email (for your validateToken(email, token))
+    // public boolean validateToken(String token, String email) {
+    //     try {
+    //         String extractedEmail = extractEmail(token);
+    //         return extractedEmail.equals(email) && !isTokenExpired(token);
+    //     } catch (Exception e) {
+    //         return false;
+    //     }
+    // }
+
+    // Helper: Check if token is expired
+    private boolean isTokenExpired(String token) {
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getExpiration().before(new Date());
+    }
 }
