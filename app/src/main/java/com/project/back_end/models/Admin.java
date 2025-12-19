@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -14,21 +15,16 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull(message = "Name cannot be null")
+    
+    @NotNull(message = "username cannot be null")
+    @Column(unique = true)
     private String username;
 
-    @NotNull(message = "Password cannot be null")
+    @NotNull(message = "password cannot be null")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+     //getters and setters
 
     public String getUsername() {
         return username;
@@ -38,21 +34,12 @@ public class Admin {
         this.username = username;
     }
 
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Admin() {
-    }
-
-    public Admin(Long id, @NotNull(message = "Name cannot be null") String username,
-            @NotNull(message = "Password cannot be null") String password) {
-        this.id = id;
-        this.username = username;
         this.password = password;
     }
 

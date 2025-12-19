@@ -1,8 +1,5 @@
 package com.project.back_end.models;
 
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,71 +7,37 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
 public class Patient {
 
-    // 1. 'id' field:
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 2. 'name' field:
-    @NotNull(message = "Name cannot be null")
-    @Size(min = 3, max = 100)
+    @NotNull(message = "Patient name cannot be null")
+    @Size(min = 3, max = 100, message = "Patient name should be between 3 and 100 characters")
     private String name;
 
-    // 3. 'email' field:
-    @NotNull(message = "Email cannot be Null")
-    @Email
+    @NotNull(message = "Email cannot be null")
+    @Email(message = "Invalid email format")
     private String email;
 
-    // 4. 'password' field:
     @NotNull(message = "Password cannot be null")
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 6)
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
 
-    // 5. 'phone' field:
-    @NotNull(message = "Phone cannot be null")
-    @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
+    @NotNull(message = "Phone number cannot be null")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits long")
     private String phone;
 
-    // 6. 'address' field:
     @NotNull(message = "Address cannot be null")
-    @Size(max = 255)
+    @Size(max = 255, message = "Address should not exceed 255 characters")
     private String address;
 
-    //date of birth
-    @Past
-    private LocalDate dateOfBirth;
-
-    //emergencyContact
-      @Pattern(regexp = "\\d{10}", message = "Le numéro de téléphone doit comporter 10 chiffres")
-    @Size(min = 10, max = 10)
-    private String emergencyContact;
-
-    // 7. Getters and Setters:
-
-    public String getEmergencyContact() {
-        return emergencyContact;
-    }
-
-      public void setEmergencyContact(String emergencyContact) {
-          this.emergencyContact = emergencyContact;
-      }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
